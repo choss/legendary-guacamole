@@ -1,0 +1,62 @@
+{
+  "servers" : [ {
+    "port" : "12001",
+    "host" : "server1",
+	"alias": "uat.server1",
+    "queries" : [ {
+      "outputWriters" : [ {
+        "@class" : "com.googlecode.jmxtrans.model.output.KeyOutWriter",
+        "outputFile" : "C:/tmp/keyout2.txt",
+        "maxLogFileSize" : "10MB",
+        "maxLogBackupFiles" : 200,
+        "delimiter" : "\t",
+        "debug" : false
+      }, {
+        "@class" : "com.googlecode.jmxtrans.model.output.elastic.ElasticWriter",
+        "connectionUrl" : "http://kibana:9200",
+        "rootPrefix" : "vm_monitoring",
+		"typeNames" : ["name"]
+	  } ],
+      "obj" : "java.lang:type=Memory",
+      "resultAlias": "heap",
+      "attr" : [ "HeapMemoryUsage", "NonHeapMemoryUsage" ]
+    }, {
+      "outputWriters" : [ {
+        "@class" : "com.googlecode.jmxtrans.model.output.KeyOutWriter",
+        "outputFile" : "C:/tmp/keyout2.txt",
+        "maxLogFileSize" : "10MB",
+        "maxLogBackupFiles" : 200,
+        "delimiter" : "\t",
+        "debug" : false,
+		"typeNames" : ["name"]
+      }, {
+        "@class" : "com.googlecode.jmxtrans.model.output.elastic.ElasticWriter",
+        "connectionUrl" : "http://kibana:9200",
+        "rootPrefix" : "vm_monitoring",
+		"typeNames" : ["name"]
+	  } ],
+      "obj" : "java.lang:name=CMS Old Gen,type=MemoryPool",
+      "resultAlias": "cmsoldgen",
+      "attr" : [ "Usage" ]
+    }, {
+      "outputWriters" : [ {
+        "@class" : "com.googlecode.jmxtrans.model.output.KeyOutWriter",
+        "outputFile" : "C:/tmp/keyout2.txt",
+        "maxLogFileSize" : "10MB",
+        "maxLogBackupFiles" : 200,
+        "delimiter" : "\t",
+        "debug" : false,
+		"typeNames" : ["name"]
+		}, {
+        "@class" : "com.googlecode.jmxtrans.model.output.elastic.ElasticWriter",
+        "connectionUrl" : "http://kibana:9200",
+        "rootPrefix" : "vm_monitoring",
+		"typeNames" : ["name"]
+	  } ],
+      "obj" : "java.lang:type=GarbageCollector,name=*",
+      "attr" : [ "CollectionCount", "CollectionTime" ],
+	  "resultAlias": "gc"
+    } ],
+    "numQueryThreads" : 2
+  } ]
+}
